@@ -22,10 +22,9 @@ repo_init_defauilts='--repo-branch=repo-1'
 repo_sync_defauilts='--no-tags --no-clone-bundle -q '
 [ -n "$DEBUG" ] && repo_init_defauilts+=' -q' && repo_sync_defauilts+=' -q'
 
-REPO_INIT_MANIFEST_URL="${REPO_INIT_MANIFEST_URL:-https://github.com/tungstenfabric/tf-vnc}"
 VNC_ORGANIZATION="tungstenfabric"
 VNC_REPO="tf-vnc"
-if [[ -n "$CONTRAIL_BRANCH" ]] ; then
+if [[ -n "$CONTRAIL_BRANCH" && -z "$REPO_INIT_MANIFEST_URL" ]] ; then
   echo "INFO: CONTRAIL_BRANCH is not empty - $CONTRAIL_BRANCH"
   # check branch in tf-vnc, then in contrail-vnc and then fallback to master branch in tf-vnc
   if [[ $(curl -s https://api.github.com/repos/tungstenfabric/tf-vnc/branches/${CONTRAIL_BRANCH} | jq -r '.name') != "${CONTRAIL_BRANCH}" ]]; then
@@ -51,6 +50,7 @@ if [[ -n "$CONTRAIL_BRANCH" ]] ; then
   fi
 fi
 
+REPO_INIT_MANIFEST_URL="${REPO_INIT_MANIFEST_URL:-https://github.com/tungstenfabric/tf-vnc}"
 REPO_INIT_MANIFEST_BRANCH=${REPO_INIT_MANIFEST_BRANCH:-${CONTRAIL_BRANCH}}
 REPO_INIT_OPTS=${REPO_INIT_OPTS:-${repo_init_defauilts}}
 REPO_SYNC_OPTS=${REPO_SYNC_OPTS:-${repo_sync_defauilts}}
