@@ -34,6 +34,16 @@ export KERNEL_REPOSITORIES_RHEL8="$KERNEL_REPOSITORIES_RHEL8"
 export CONTRAIL_SOURCE=${CONTRAIL_DIR}
 export BUILDTAG=${CONTRAIL_CONTAINER_TAG//-/_}
 EOF
+
+  if [[ -n "${REPO_URL+x}" ]] ; then
+    echo "export REPO_URL=${REPO_URL}" >> $tf_container_env_file
+  fi
+  if [[ -n "${REPO_INIT_MANIFEST_URL+x}" ]] ; then
+    echo "export REPO_INIT_MANIFEST_URL=${REPO_INIT_MANIFEST_URL}" >> $tf_container_env_file
+  fi
+  if [[ -n "${REPO_INIT_MANIFEST_BRANCH+x}" ]] ; then
+    echo "export REPO_INIT_MANIFEST_BRANCH=${REPO_INIT_MANIFEST_BRANCH}" >> $tf_container_env_file
+  fi
   if [[ -n "${GENERAL_EXTRA_RPMS+x}" ]] ; then
     echo "export GENERAL_EXTRA_RPMS=${GENERAL_EXTRA_RPMS}" >> $tf_container_env_file
   fi
